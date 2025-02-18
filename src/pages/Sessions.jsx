@@ -674,7 +674,7 @@ const SessionsPage = () => {
                       e.stopPropagation(); // Prevent any unwanted parent action
                       navigate(`/collector-edit-session/${session._id}`);
                     }}
-                    className="flex items-center justify-center bg-blue-500 text-white rounded-full p-3 hover:bg-blue-600 transition shadow-lg z-10"
+                    className="flex items-center justify-center bg-customPurpleMid text-white rounded-full p-3 hover:bg-blue-600 transition shadow-lg z-10"
                   >
                     <FiEdit3 size={20} />
                   </button>
