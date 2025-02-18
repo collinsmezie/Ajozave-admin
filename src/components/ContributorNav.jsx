@@ -15,7 +15,7 @@ const ContributorNav = () => {
 
   const navItems = [
     { name: 'Wallet', icon: <WalletIcon className="h-6 w-6" />, path: '/contributor-dashboard' },
-    { name: 'Groups', icon: <UserGroupIcon className="h-6 w-6" />, path: '/contributor-groups' },
+    { name: 'Groups', icon: <UserGroupIcon className="h-6 w-6" />, path: '/contributor-sessions' },
     { name: 'Cards', icon: <CreditCardIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },
     { name: 'Misc.', icon: <FolderMinusIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },
     { name: 'Menu', icon: <UserCircleIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },

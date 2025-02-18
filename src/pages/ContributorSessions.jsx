@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import SavingsSessionCard from '../components/SavingsSessionCard';
 
-const ContributorGroupsPage = () => {
+const ContributorSessions = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null); // Modal content to handle different scenarios
   const { sessions, loading, error } = useSelector((state) => state.contributorSessions);
@@ -100,9 +100,12 @@ const ContributorGroupsPage = () => {
           </div>
         ) : (
           sessions.map((session) => (
-            <div className="space-y-4 mb-4" key={session._id}>
+            // <Link to={`/contributor-groups/${session._id}`} className="space-y-4 mb-4" key={session._id}>
+            <Link to={`/contributor-sessions/${session._id}`} key={session._id}>
+            <div className="space-y-4 mb-4" >
               <SavingsSessionCard session={session} />
           </div>
+          </Link>
           ))
         )}
       </div>
@@ -127,4 +130,4 @@ const ContributorGroupsPage = () => {
   );
 };
 
-export default ContributorGroupsPage;
+export default ContributorSessions;

@@ -17,7 +17,7 @@ export const fetchSessionDetails = createAsyncThunk(
       }
 
       if (!response.ok) {
-        console.log("RESPONSE", response)
+        console.log("RESPONSwE", response)
         throw new Error('Failed to fetch session details');
       }
 
