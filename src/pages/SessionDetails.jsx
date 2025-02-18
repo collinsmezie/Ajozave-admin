@@ -286,6 +286,7 @@ import Modal from "../components/Modal";
 import { BellIcon } from '@heroicons/react/24/outline';
 import { FaHeadset } from 'react-icons/fa';
 import { fetchUserName } from '../utility/helper';
+import Header from '../components/Header';
 
 const SessionDetailsPage = () => {
   const { sessionId } = useParams();
@@ -556,32 +557,12 @@ const SessionDetailsPage = () => {
     <div className="flex flex-col min-h-screen bg-gray-100 p-4">
       {/* Header */}
 
-      <header className="sticky top-0 w-full flex items-center justify-between px-4 py-3 bg-white rounded-2xl z-50 mb-4">
-
-        <div className="flex items-center space-x-3">
-          <img
-            src={`https://api.dicebear.com/5.x/avataaars/svg?seed=Username`}
-            alt="User Avatar"
-            className="w-8 h-8 rounded-full border-2 border-purple-300"
-          />
-          <div>
-            {/* <p className="text-white text-sm font-medium">Hi, Username</p>
-              <p className="text-white text-xs">Welcome back!</p> */}
-            <p className="text-black text-sm font-medium">Hi, {fetchUserName()}</p>
-            <p className="text-gray-600 text-xs">Let's save together!</p>
-          </div>
-        </div>
-        <div className="flex items-center space-x-4">
-          {/* <button className="p-2 bg-white transition duration-300">
-
-            <BellIcon className="text-purple-600 w-6 h-6" />
-          </button> */}
-          <button className="p-2 bg-white transition duration-300">
-
-            <FiSliders className="text-purple-500 w-5 h-5" />
-          </button>
-        </div>
-      </header>
+      <Header
+        fetchUserName={fetchUserName}
+        session={session}
+        // handleShowDeleteModal={handleShowDeleteModal}
+        // handleCancelLongPress={handleCancelLongPress}
+      />
 
 
       <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm mb-4">
@@ -836,7 +817,6 @@ const SessionDetailsPage = () => {
 
       </BottomSheetModal>
 
-
       {/* Action Button */}
       <div className="text-center">
         <button
@@ -853,38 +833,25 @@ const SessionDetailsPage = () => {
       {/* Alert Modal */}
       <Modal
         isOpen={alertModal}
-        title={alertModal?.title}
-        message={alertModal?.message}
-        onCancel={() => setAlertShowModal(false)}
+        title={alertModal?.title || ""}
+        message={alertModal?.message || ""}
+        onCancel={() => setAlertShowModal(null)}
         onConfirm={alertModal?.onConfirm}
         confirmText={alertModal?.confirmText}
         disableCancel={alertModal?.disableCancel}
       />
 
+   
       {/* modal Content */}
       <Modal
-        isOpen={modalContent}
-        title={modalContent?.title}
-        message={modalContent?.message}
-        onCancel={() => setModalContent(false)}
+        isOpen={!!modalContent} // Ensure it's a boolean
+        title={modalContent?.title || ""}
+        message={modalContent?.message || ""}
+        onCancel={() => setModalContent(null)}
         onConfirm={modalContent?.onConfirm}
         confirmText={modalContent?.confirmText}
         disableCancel={modalContent?.disableCancel}
       />
-
-      {/* Success Modal */}
-      {/* <Modal
-        isOpen={showSuccessModal}
-        title="Session Created Successfully!"
-        message="Your new session has been created. You can now add members to the session."
-        onCancel={() => {
-          setShowSuccessModal(false)
-          navigate(`/collector-sessions/${sessionId}`);
-        }}
-        onConfirm={handleAddMembers}
-        confirmText="Add Members"
-        cancelText="View"
-      /> */}
 
     </div>
   );

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserIcon } from "@heroicons/react/24/solid";
@@ -24,9 +23,6 @@ const ContributorSessionDetails = () => {
   const [showAllMembers, setShowAllMembers] = useState(false);
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [submitLoading, setSubmitLoading] = useState(false);
-
-  const [selectedMembers, setSelectedMembers] = useState([]);
 
   const [modalContent, setModalContent] = useState(false);
 
@@ -64,7 +60,7 @@ const ContributorSessionDetails = () => {
         }
         const resultAction = await dispatch(fetchSessionDetails(sessionId));
 
-        console.log("RESULT ACTIONZZ", resultAction)
+        console.log("RESULT ACTIONZ", resultAction)
 
         // Check if the action was rejected and handle 401 specifically
         if (fetchSessionDetails.rejected.match(resultAction)) {
@@ -86,125 +82,8 @@ const ContributorSessionDetails = () => {
   }, [dispatch, sessionId]);
 
 
-  useEffect(() => {
-    const fetchInterestedMembers = async () => {
-      try {
-
-        const token = localStorage.getItem('jwtToken');
-        const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}/interestedMembers`, {
-          // const response = await fetch('http://localhost:4000/api/users', {
-
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
-        if (response.status === 401) {
-          setModalContent({
-            title: 'Session Expired',
-            message: 'Please log in again to continue.',
-            onConfirm: handleLoginRedirect,
-            confirmText: 'Login',
-            disableCancel: true,
-          });
-          // setAlertShowModal(true);
-          return;
-        }
-
-        if (!response.ok) {
-          const errorMessage = await response.json().catch(() => ({}));
-          throw new Error(errorMessage.error || "An unexpected error occurred");
-        }
-
-        const data = await response.json();
-        console.log("DATA", data);
-        setInterestedMembers(data.interestedMembers);
-        // setAlertShowModal(false);
-      } catch (err) {
-        setModalContent({
-          title: 'Errorss',
-          message: err.message || "An unexpected error occurred",
-          onConfirm: fetchInterestedMembers,
-          confirmText: 'Retry',
-          disableCancel: true,
-        });
-        // setAlertShowModal(true);
-      } finally {
-        // setModalContent((prev) => ({ ...prev, isOpen: false }));
-        setModalContent(false);
-      }
-    };
-
-    fetchInterestedMembers();
-  }, []);
-
-
-
-  const handleDeleteMember = async (memberId) => {
-    try {
-      setDeletingMember(memberId);
-      const resultAction = await dispatch(deleteMember({ sessionId, memberId }));
-
-      if (deleteMember.fulfilled.match(resultAction)) {
-        console.log("Member successfully deleted:", resultAction.payload);
-        // set interested members to the new list of members
-        setInterestedMembers(resultAction.payload.response);
-        setFocusedMember(null);
-      } else {
-        console.error("Delete failed:", resultAction.payload || "Unknown error");
-        alert(resultAction.payload || "Failed to delete member.");
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
-      alert("Something went wrong.");
-    } finally {
-      setDeletingMember(null);
-    }
-  };
-
-
   const toggleShowMembers = () => {
     setShowAllMembers((prev) => !prev);
-  };
-
-  const handleSelect = (memberId) => {
-    setSelectedMembers((prev) =>
-      prev.includes(memberId)
-        ? prev.filter((id) => id !== memberId)
-        : [...prev, memberId]
-    );
-  };
-
-
-  const handleConfirmSelection = async () => {
-    setSubmitLoading(true);
-    try {
-      const resultAction = await dispatch(addMembers({ sessionId, selectedMembers }));
-
-      if (addMembers.fulfilled.match(resultAction)) {
-        console.log("Members successfully added:", resultAction.payload);
-        setInterestedMembers([]);
-        setModalOpen(false);
-
-        navigate(`/collector-sessions/${sessionId}`);
-      } else {
-        setModalContent({
-          title: 'Error',
-          message: resultAction.payload || 'Failed to add members.',
-          onCancel: () => setModalContent((prev) => ({ ...prev, isOpen: false })),
-        });
-        // setAlertShowModal(true);
-      }
-    } catch (err) {
-      setModalContent({
-        title: 'Error',
-        message: 'Failed to add members. Please try again later.',
-        onCancel: () => setModalContent((prev) => ({ ...prev, isOpen: false })),
-      });
-      // setAlertShowModal(true);
-    } finally {
-      setSubmitLoading(false);
-    }
   };
 
 
