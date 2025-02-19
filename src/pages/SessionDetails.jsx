@@ -485,7 +485,8 @@ const SessionDetailsPage = () => {
 
       if (addMembers.fulfilled.match(resultAction)) {
         console.log("Members successfully added:", resultAction.payload);
-        setInterestedMembers([]);
+        // setInterestedMembers to filter out the selected members
+        setInterestedMembers((prev) => prev.filter((member) => !selectedMembers.includes(member._id)));
         setModalOpen(false);
 
         navigate(`/collector-sessions/${sessionId}`);
